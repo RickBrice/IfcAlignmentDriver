@@ -3,8 +3,90 @@
 
 #include <ifcparse/IfcHierarchyHelper.h>
 #include <ifcparse/Ifc4x3_add2.h>
+//#include <ifcgeom_schema_agnostic/piecewise_function_evaluator.h>
+//#include <ifcgeom_schema_agnostic/abstract_mapping.h>
 #include <ifcgeom/piecewise_function_evaluator.h>
 #include <ifcgeom/abstract_mapping.h>
+
+//#include <progress.h>
+//#include <svgfill.h>
+//#include <ifcgeom/mapping.h>
+
+//#include <ifcgeom_schema_agnostic/IteratorSettings.h>
+//#include <ifcgeom_schema_agnostic/Serializer.h>
+//#include <ifcgeom_schema_agnostic/empty.h>
+//#include <ifcgeom_schema_agnostic/ifc_geom_api.h>
+//#include <ifcgeom_schema_agnostic/profile_helper.h>
+//#include <ifcgeom_schema_agnostic/piecewise_function_impl.h>
+//#include <ifcgeom_schema_agnostic/infra_sweep_helper.h>
+//#include <ifcgeom_schema_agnostic/taxonomy.h>
+//#include <ifcgeom_schema_agnostic/ConversionSettings.h>
+//#include <ifcgeom_schema_agnostic/AbstractKernel.h>
+//#include <ifcgeom_schema_agnostic/ConversionResult.h>
+//#include <ifcgeom_schema_agnostic/Converter.h>
+//#include <ifcgeom_schema_agnostic/GeometrySerializer.h>
+//#include <ifcgeom_schema_agnostic/IfcGeomElement.h>
+//#include <ifcgeom_schema_agnostic/IfcGeomFilter.h>
+//#include <ifcgeom_schema_agnostic/IfcGeomRenderStyles.h>
+//#include <ifcgeom_schema_agnostic/IfcGeomRepresentation.h>
+//#include <ifcgeom_schema_agnostic/Iterator.h>
+//#include <ifcgeom_schema_agnostic/abstract_mapping.h>
+//#include <ifcgeom_schema_agnostic/piecewise_function_evaluator.h>
+//
+//#include <ifcparse\Argument.h>
+//#include <ifcparse\ArgumentType.h>
+//#include <ifcparse\IfcAlignmentHelper.h>
+//#include <ifcparse\IfcCharacterDecoder.h>
+//#include <ifcparse\IfcEntityInstanceData.h>
+//#include <ifcparse\IfcException.h>
+//#include <ifcparse\IfcGlobalId.h>
+//#include <ifcparse\IfcHierarchyHelper.h>
+//#include <ifcparse\IfcLogger.h>
+//#include <ifcparse\IfcParse.h>
+//#include <ifcparse\IfcSIPrefix.h>
+//#include <ifcparse\IfcSpfHeader.h>
+//#include <ifcparse\IfcSpfStream.h>
+//#include <ifcparse\IfcWrite.h>
+//#include <ifcparse\aggregate_of_instance.h>
+//#include <ifcparse\ifc_parse_api.h>
+//#include <ifcparse\macros.h>
+//#include <ifcparse\utils.h>
+//#include <ifcparse\variantarray.h>
+//#include <ifcparse\Ifc2x3.h>
+//#include <ifcparse\Ifc2x3-definitions.h>
+//#include <ifcparse\Ifc4.h>
+//#include <ifcparse\Ifc4-definitions.h>
+//#include <ifcparse\Ifc4x1.h>
+//#include <ifcparse\Ifc4x1-definitions.h>
+//#include <ifcparse\Ifc4x2.h>
+//#include <ifcparse\Ifc4x2-definitions.h>
+//#include <ifcparse\Ifc4x3_tc1.h>
+//#include <ifcparse\Ifc4x3_tc1-definitions.h>
+//#include <ifcparse\Ifc4x3_add1.h>
+//#include <ifcparse\Ifc4x3_add1-definitions.h>
+//#include <ifcparse\Ifc4x3_add2.h>
+//#include <ifcparse\Ifc4x3_add2-definitions.h>
+//#include <ifcparse\IfcSchema.h>
+//#include <ifcparse\IfcFile.h>
+//#include <ifcparse\IfcBaseClass.h>
+//#include <ifcparse\Ifc4x3.h>
+//#include <ifcparse\Ifc4x3-definitions.h>
+//
+//#include <serializers\ColladaSerializer.h>
+//#include <serializers\GltfSerializer.h>
+//#include <serializers\IgesSerializer.h>
+//#include <serializers\OpenCascadeBasedSerializer.h>
+//#include <serializers\StepSerializer.h>
+//#include <serializers\SvgSerializer.h>
+//#include <serializers\USDSerializer.h>
+//#include <serializers\WavefrontObjSerializer.h>
+//#include <serializers\XmlSerializer.h>
+//#include <serializers\serializers_api.h>
+//#include <serializers\util.h>
+//#include <serializers\HdfSerializer.h>
+//#include <serializers\TtlWktSerializer.h>
+//
+//#include <serializers\schema_dependent\XmlSerializer.h>
 
 #include <iomanip>
 #include <iostream>
@@ -445,44 +527,45 @@ int main(int argc, char** argv)
 	//
 	// Write out IFC elements for curve and (x,y) (u,z) coordinates
 	// 
+	//write_curve_parameters(file, mapping, "Curve2D");
 	//write_curve_parameters(file, mapping, "Curve3D");
 
-	// map each segment
-	auto ccs = file.instances_by_type<Schema::IfcCompositeCurve>();
-	auto cc = (*ccs->begin())->as<Schema::IfcCompositeCurve>();
-	auto segments = cc->Segments();
-	auto length_unit = mapping->get_length_unit();
+	//// map each segment
+	//auto ccs = file.instances_by_type<Schema::IfcCompositeCurve>();
+	//auto cc = (*ccs->begin())->as<Schema::IfcCompositeCurve>();
+	//auto segments = cc->Segments();
+	//auto length_unit = mapping->get_length_unit();
 
-	for (auto segment : *segments)
-	{
-		auto mapped_item = mapping->map(segment);
+	//for (auto segment : *segments)
+	//{
+	//	auto mapped_item = mapping->map(segment);
 
-		auto implicit_item = ifcopenshell::geometry::taxonomy::dcast<ifcopenshell::geometry::taxonomy::implicit_item>(mapped_item);
-		auto pwf = ifcopenshell::geometry::taxonomy::dcast<ifcopenshell::geometry::taxonomy::piecewise_function>(implicit_item);
-		ifcopenshell::geometry::piecewise_function_evaluator evaluator(pwf);
-		//ifcopenshell::geometry::taxonomy::loop::ptr loop = ifcopenshell::geometry::taxonomy::dcast<ifcopenshell::geometry::taxonomy::loop>(evaluator.evaluate());
-		auto curve_segment = segment->as<Schema::IfcCurveSegment>();
-		auto id = curve_segment->id();
-		//double start = curve_segment->SegmentStart()->data().get_attribute_value(0);
-		double length = curve_segment->SegmentLength()->data().get_attribute_value(0);
-		Eigen::Matrix4d s = evaluator.evaluate(0.0);
-		Eigen::Matrix4d e = evaluator.evaluate(length * length_unit);
+	//	auto implicit_item = ifcopenshell::geometry::taxonomy::dcast<ifcopenshell::geometry::taxonomy::implicit_item>(mapped_item);
+	//	auto pwf = ifcopenshell::geometry::taxonomy::dcast<ifcopenshell::geometry::taxonomy::piecewise_function>(implicit_item);
+	//	ifcopenshell::geometry::piecewise_function_evaluator evaluator(pwf);
+	//	//ifcopenshell::geometry::taxonomy::loop::ptr loop = ifcopenshell::geometry::taxonomy::dcast<ifcopenshell::geometry::taxonomy::loop>(evaluator.evaluate());
+	//	auto curve_segment = segment->as<Schema::IfcCurveSegment>();
+	//	auto id = curve_segment->id();
+	//	//double start = curve_segment->SegmentStart()->data().get_attribute_value(0);
+	//	double length = curve_segment->SegmentLength()->data().get_attribute_value(0);
+	//	Eigen::Matrix4d s = evaluator.evaluate(0.0);
+	//	Eigen::Matrix4d e = evaluator.evaluate(length * length_unit);
 
-		s(0, 3) /= length_unit;
-		s(1, 3) /= length_unit;
+	//	s(0, 3) /= length_unit;
+	//	s(1, 3) /= length_unit;
 
-		e(0, 3) /= length_unit;
-		e(1, 3) /= length_unit;
-	}
+	//	e(0, 3) /= length_unit;
+	//	e(1, 3) /= length_unit;
+	//}
 
 
-	//auto gcs = file.instances_by_type<Schema::IfcGradientCurve>();
-	//auto gc = (*gcs->begin())->as<Schema::IfcGradientCurve>();
-	//auto mapped_item = mapping->map(gc);
-	//auto implicit_item = ifcopenshell::geometry::taxonomy::dcast<ifcopenshell::geometry::taxonomy::implicit_item>(mapped_item);
-	//auto pwf = ifcopenshell::geometry::taxonomy::dcast<ifcopenshell::geometry::taxonomy::piecewise_function>(implicit_item);
-	//ifcopenshell::geometry::piecewise_function_evaluator evaluator(pwf);
-	//evaluator.evaluate(30.0);
+	auto gcs = file.instances_by_type<Schema::IfcGradientCurve>();
+	auto gc = (*gcs->begin())->as<Schema::IfcGradientCurve>();
+	auto mapped_item = mapping->map(gc);
+	auto implicit_item = ifcopenshell::geometry::taxonomy::dcast<ifcopenshell::geometry::taxonomy::implicit_item>(mapped_item);
+	auto pwf = ifcopenshell::geometry::taxonomy::dcast<ifcopenshell::geometry::taxonomy::piecewise_function>(implicit_item);
+	ifcopenshell::geometry::piecewise_function_evaluator evaluator(pwf);
+	evaluator.evaluate(30.0);
 
 	//auto segments = gc->Segments();
 	//for (auto segment : *segments)
