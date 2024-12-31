@@ -5,7 +5,7 @@
 #include <ifcparse/Ifc4x3_add2.h>
 //#include <ifcgeom_schema_agnostic/piecewise_function_evaluator.h>
 //#include <ifcgeom_schema_agnostic/abstract_mapping.h>
-#include <ifcgeom/piecewise_function_evaluator.h>
+#include <ifcgeom/function_item_evaluator.h>
 #include <ifcgeom/abstract_mapping.h>
 
 //#include <progress.h>
@@ -326,6 +326,7 @@ void write_curve_definition(std::ostream& os, Schema::IfcCurve* curve)
 
 void write_curve_parameters(IfcParse::IfcFile& file, ifcopenshell::geometry::abstract_mapping* mapping,const std::string& representationType = "Curve3D")
 {
+	auto settings = mapping->settings();
 	auto length_unit = mapping->get_length_unit();
 	auto alignments = file.instances_by_type<Schema::IfcAlignment>();
 	int alignment_count = 0;
@@ -381,7 +382,7 @@ void write_curve_parameters(IfcParse::IfcFile& file, ifcopenshell::geometry::abs
 					ifcopenshell::geometry::taxonomy::loop::ptr loop;
 					auto implicit_item = ifcopenshell::geometry::taxonomy::dcast<ifcopenshell::geometry::taxonomy::implicit_item>(mapped_item);
 					auto pwf = ifcopenshell::geometry::taxonomy::dcast<ifcopenshell::geometry::taxonomy::piecewise_function>(implicit_item);
-					ifcopenshell::geometry::piecewise_function_evaluator evaluator(pwf);
+					ifcopenshell::geometry::function_item_evaluator evaluator(pwf,settings);
 					auto points = evaluator.evaluation_points();
 					if (implicit_item)
 					{
@@ -509,8 +510,8 @@ int main(int argc, char** argv)
 	}
 
 	ifcopenshell::geometry::Settings settings;
-	settings.get<ifcopenshell::geometry::settings::PiecewiseStepType>().value = ifcopenshell::geometry::settings::PiecewiseStepMethod::MAXSTEPSIZE;
-	settings.get<ifcopenshell::geometry::settings::PiecewiseStepParam>().value = 1.0;
+	settings.get<ifcopenshell::geometry::settings::FunctionStepType>().value = ifcopenshell::geometry::settings::FunctionStepMethod::MAXSTEPSIZE;
+	settings.get<ifcopenshell::geometry::settings::FunctionStepParam>().value = 1.0;
 
 	auto mapping = ifcopenshell::geometry::impl::mapping_implementations().construct(&file, settings);
 
@@ -559,13 +560,16 @@ int main(int argc, char** argv)
 	//}
 
 
-	auto gcs = file.instances_by_type<Schema::IfcGradientCurve>();
-	auto gc = (*gcs->begin())->as<Schema::IfcGradientCurve>();
-	auto mapped_item = mapping->map(gc);
+	//auto gcs = file.instances_by_type<Schema::IfcGradientCurve>();
+	//auto gc = (*gcs->begin())->as<Schema::IfcGradientCurve>();
+	//auto mapped_item = mapping->map(gc);
+	auto ccs = file.instances_by_type<Schema::IfcCompositeCurve>();
+	auto cc = (*ccs->begin())->as<Schema::IfcCompositeCurve>();
+	auto mapped_item = mapping->map(cc);
 	auto implicit_item = ifcopenshell::geometry::taxonomy::dcast<ifcopenshell::geometry::taxonomy::implicit_item>(mapped_item);
-	auto pwf = ifcopenshell::geometry::taxonomy::dcast<ifcopenshell::geometry::taxonomy::piecewise_function>(implicit_item);
-	ifcopenshell::geometry::piecewise_function_evaluator evaluator(pwf);
-	evaluator.evaluate(30.0);
+	auto pwf = ifcopenshell::geometry::taxonomy::dcast<ifcopenshell::geometry::taxonomy::function_item>(implicit_item);
+	ifcopenshell::geometry::function_item_evaluator evaluator(pwf,settings);
+	evaluator.evaluate(50.0);
 
 	//auto segments = gc->Segments();
 	//for (auto segment : *segments)
