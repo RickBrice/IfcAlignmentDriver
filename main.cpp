@@ -515,16 +515,21 @@ int main(int argc, char** argv)
 
 	auto mapping = ifcopenshell::geometry::impl::mapping_implementations().construct(&file, settings);
 
-	auto gc = file.instance_by_id(74)->as<Schema::IfcGradientCurve>();
-	auto mapped_item = mapping->map(gc);
-	auto implicit_item = ifcopenshell::geometry::taxonomy::dcast<ifcopenshell::geometry::taxonomy::implicit_item>(mapped_item);
-	auto gc_fn = ifcopenshell::geometry::taxonomy::dcast<ifcopenshell::geometry::taxonomy::gradient_function>(implicit_item);
-	auto pwf = gc_fn->get_vertical();
-	ifcopenshell::geometry::function_item_evaluator evaluator(settings, pwf);
-	for (auto& span : pwf->spans())
-	{
-	   std::cout << "start " << span->start() << ", end " << span->end() << std::endl;
-	}
+	auto beam = file.instance_by_id(5827)->as<Schema::IfcBeam>();
+	auto representation = beam->Representation();
+	auto shape_rep = *(representation->Representations()->begin());
+	auto mapped_item = mapping->map(shape_rep);
+
+	//auto gc = file.instance_by_id(74)->as<Schema::IfcGradientCurve>();
+	//auto mapped_item = mapping->map(gc);
+	//auto implicit_item = ifcopenshell::geometry::taxonomy::dcast<ifcopenshell::geometry::taxonomy::implicit_item>(mapped_item);
+	//auto gc_fn = ifcopenshell::geometry::taxonomy::dcast<ifcopenshell::geometry::taxonomy::gradient_function>(implicit_item);
+	//auto pwf = gc_fn->get_vertical();
+	//ifcopenshell::geometry::function_item_evaluator evaluator(settings, pwf);
+	//for (auto& span : pwf->spans())
+	//{
+	//   std::cout << "start " << span->start() << ", end " << span->end() << std::endl;
+	//}
 
 	//auto pwf = ifcopenshell::geometry::taxonomy::dcast<ifcopenshell::geometry::taxonomy::piecewise_function>(mapped_item);
 	//auto [start, end] = pwf->range();
@@ -544,32 +549,32 @@ int main(int argc, char** argv)
 	//auto ccs = file.instances_by_type<Schema::IfcCompositeCurve>();
 	//auto cc = (*ccs->begin())->as<Schema::IfcCompositeCurve>();
 	//auto segments = cc->Segments();
-    auto segments = gc->Segments();
-	auto length_unit = mapping->get_length_unit();
+ //   auto segments = gc->Segments();
+	//auto length_unit = mapping->get_length_unit();
 
-	for (auto segment : *segments)
-	{
-		auto mapped_item = mapping->map(segment);
+	//for (auto segment : *segments)
+	//{
+	//	auto mapped_item = mapping->map(segment);
 
-		auto implicit_item = ifcopenshell::geometry::taxonomy::dcast<ifcopenshell::geometry::taxonomy::implicit_item>(mapped_item);
-		auto pwf = ifcopenshell::geometry::taxonomy::dcast<ifcopenshell::geometry::taxonomy::piecewise_function>(implicit_item);
+	//	auto implicit_item = ifcopenshell::geometry::taxonomy::dcast<ifcopenshell::geometry::taxonomy::implicit_item>(mapped_item);
+	//	auto pwf = ifcopenshell::geometry::taxonomy::dcast<ifcopenshell::geometry::taxonomy::piecewise_function>(implicit_item);
 
-		ifcopenshell::geometry::function_item_evaluator evaluator(settings, pwf);
+	//	ifcopenshell::geometry::function_item_evaluator evaluator(settings, pwf);
 
-		//ifcopenshell::geometry::taxonomy::loop::ptr loop = ifcopenshell::geometry::taxonomy::dcast<ifcopenshell::geometry::taxonomy::loop>(evaluator.evaluate());
-		auto curve_segment = segment->as<Schema::IfcCurveSegment>();
-		auto id = curve_segment->id();
-		//double start = curve_segment->SegmentStart()->data().get_attribute_value(0);
-		double length = curve_segment->SegmentLength()->data().get_attribute_value(0);
-		Eigen::Matrix4d s = evaluator.evaluate(0.0);
-		Eigen::Matrix4d e = evaluator.evaluate(length * length_unit);
+	//	//ifcopenshell::geometry::taxonomy::loop::ptr loop = ifcopenshell::geometry::taxonomy::dcast<ifcopenshell::geometry::taxonomy::loop>(evaluator.evaluate());
+	//	auto curve_segment = segment->as<Schema::IfcCurveSegment>();
+	//	auto id = curve_segment->id();
+	//	//double start = curve_segment->SegmentStart()->data().get_attribute_value(0);
+	//	double length = curve_segment->SegmentLength()->data().get_attribute_value(0);
+	//	Eigen::Matrix4d s = evaluator.evaluate(0.0);
+	//	Eigen::Matrix4d e = evaluator.evaluate(length * length_unit);
 
-		s(0, 3) /= length_unit;
-		s(1, 3) /= length_unit;
-		
-		e(0, 3) /= length_unit;
-		e(1, 3) /= length_unit;
-	}
+	//	s(0, 3) /= length_unit;
+	//	s(1, 3) /= length_unit;
+	//	
+	//	e(0, 3) /= length_unit;
+	//	e(1, 3) /= length_unit;
+	//}
 
 
 	//auto gcs = file.instances_by_type<Schema::IfcGradientCurve>();
