@@ -515,14 +515,19 @@ int main(int argc, char** argv)
 
 	auto mapping = ifcopenshell::geometry::impl::mapping_implementations().construct(&file, settings);
 
-	auto curve = file.instance_by_id(110)->as<Schema::IfcCurveSegment>();
-	auto mapped_item = mapping->map(curve);
+	//auto curve = file.instance_by_id(110)->as<Schema::IfcCurveSegment>();
+	//auto mapped_item = mapping->map(curve);
 
 
-	//auto gc = file.instance_by_id(74)->as<Schema::IfcGradientCurve>();
-	//auto mapped_item = mapping->map(gc);
-	//auto implicit_item = ifcopenshell::geometry::taxonomy::dcast<ifcopenshell::geometry::taxonomy::implicit_item>(mapped_item);
-	//auto gc_fn = ifcopenshell::geometry::taxonomy::dcast<ifcopenshell::geometry::taxonomy::gradient_function>(implicit_item);
+	auto gc = file.instance_by_id(770)->as<Schema::IfcGradientCurve>();
+	auto mapped_item = mapping->map(gc);
+	auto implicit_item = ifcopenshell::geometry::taxonomy::dcast<ifcopenshell::geometry::taxonomy::implicit_item>(mapped_item);
+	auto gc_fn = ifcopenshell::geometry::taxonomy::dcast<ifcopenshell::geometry::taxonomy::gradient_function>(implicit_item);
+	ifcopenshell::geometry::function_item_evaluator evaluator(settings, gc_fn);
+	auto d = evaluator.evaluation_points();
+	auto p = evaluator.evaluate(gc_fn->start());
+	std::cout << p(0, 3) << ", " << p(1, 3) << ", " << p(2, 3) << std::endl;
+
 	//auto pwf = gc_fn->get_vertical();
 	//ifcopenshell::geometry::function_item_evaluator evaluator(settings, pwf);
 	//for (auto& span : pwf->spans())
@@ -530,12 +535,12 @@ int main(int argc, char** argv)
 	//   std::cout << "start " << span->start() << ", end " << span->end() << std::endl;
 	//}
 
-	auto fn = ifcopenshell::geometry::taxonomy::dcast<ifcopenshell::geometry::taxonomy::function_item>(mapped_item);
-	auto evaluator = ifcopenshell::geometry::function_item_evaluator(settings, fn);
-	auto p = evaluator.evaluate(50.0);
-	auto length_unit = mapping->get_length_unit();
-	p /= length_unit;
-	std::cout << p(0, 3) << ", " << p(1, 3) << ", " << p(2, 3) << std::endl;
+	//auto fn = ifcopenshell::geometry::taxonomy::dcast<ifcopenshell::geometry::taxonomy::function_item>(mapped_item);
+	//auto evaluator = ifcopenshell::geometry::function_item_evaluator(settings, fn);
+	//auto p = evaluator.evaluate(50.0);
+	//auto length_unit = mapping->get_length_unit();
+	//p /= length_unit;
+	//std::cout << p(0, 3) << ", " << p(1, 3) << ", " << p(2, 3) << std::endl;
 
 	//
 	// Write out IFC elements for curve and (x,y) (u,z) coordinates
