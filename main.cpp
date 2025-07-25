@@ -519,10 +519,10 @@ int main(int argc, char** argv)
 	//auto mapped_item = mapping->map(curve);
 
 
-	auto gc = file.instance_by_id(770)->as<Schema::IfcGradientCurve>();
+	auto gc = file.instance_by_id(1113)->as<Schema::IfcOffsetCurveByDistances>();
 	auto mapped_item = mapping->map(gc);
 	auto implicit_item = ifcopenshell::geometry::taxonomy::dcast<ifcopenshell::geometry::taxonomy::implicit_item>(mapped_item);
-	auto gc_fn = ifcopenshell::geometry::taxonomy::dcast<ifcopenshell::geometry::taxonomy::gradient_function>(implicit_item);
+	auto gc_fn = ifcopenshell::geometry::taxonomy::dcast<ifcopenshell::geometry::taxonomy::offset_function>(implicit_item);
 	ifcopenshell::geometry::function_item_evaluator evaluator(settings, gc_fn);
 	auto d = evaluator.evaluation_points();
 	auto p = evaluator.evaluate(gc_fn->start());
