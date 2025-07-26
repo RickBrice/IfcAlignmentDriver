@@ -519,13 +519,21 @@ int main(int argc, char** argv)
 	//auto mapped_item = mapping->map(curve);
 
 
-	auto gc = file.instance_by_id(1114)->as<Schema::IfcOffsetCurveByDistances>();
+	auto gc = file.instance_by_id(581)->as<Schema::IfcOffsetCurveByDistances>();
 	auto mapped_item = mapping->map(gc);
 	auto implicit_item = ifcopenshell::geometry::taxonomy::dcast<ifcopenshell::geometry::taxonomy::implicit_item>(mapped_item);
 	auto gc_fn = ifcopenshell::geometry::taxonomy::dcast<ifcopenshell::geometry::taxonomy::offset_function>(implicit_item);
 	ifcopenshell::geometry::function_item_evaluator evaluator(settings, gc_fn);
 	auto d = evaluator.evaluation_points();
+
+	auto length_unit = mapping->get_length_unit();
+
 	auto p = evaluator.evaluate(gc_fn->start());
+   p /= length_unit;
+	std::cout << p(0, 3) << ", " << p(1, 3) << ", " << p(2, 3) << std::endl;
+
+	p = evaluator.evaluate(gc_fn->end());
+	p /= length_unit;
 	std::cout << p(0, 3) << ", " << p(1, 3) << ", " << p(2, 3) << std::endl;
 
 	//auto pwf = gc_fn->get_vertical();
