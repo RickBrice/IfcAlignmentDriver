@@ -510,31 +510,51 @@ int main(int argc, char** argv)
 	}
 
 	ifcopenshell::geometry::Settings settings;
-	settings.get<ifcopenshell::geometry::settings::FunctionStepType>().value = ifcopenshell::geometry::settings::FunctionStepMethod::MAXSTEPSIZE;
-	settings.get<ifcopenshell::geometry::settings::FunctionStepParam>().value = 1.0;
-
 	auto mapping = ifcopenshell::geometry::impl::mapping_implementations().construct(&file, settings);
+
+	auto profiles = file.instances_by_type<Schema::IfcOpenCrossProfileDef>();
+	for (auto& profile : *profiles)
+	{
+		profile->toString(std::cout); std::cout << std::endl;
+		auto mapped_item = mapping->map(profile);
+		auto loop = ifcopenshell::geometry::taxonomy::dcast<ifcopenshell::geometry::taxonomy::loop>(mapped_item);
+		loop->print(std::cout, 0);
+	}
+
+	//auto surfaces = file.instances_by_type<Schema::IfcSectionedSurface>();
+	//for (auto& surface : *surfaces)
+	//{
+	//	auto mapped_item = mapping->map(surface);
+	//	auto loft = ifcopenshell::geometry::taxonomy::dcast<ifcopenshell::geometry::taxonomy::loft>(mapped_item);
+	//	loft->print(std::cout, 0);
+	//}
+
+	//ifcopenshell::geometry::Settings settings;
+	//settings.get<ifcopenshell::geometry::settings::FunctionStepType>().value = ifcopenshell::geometry::settings::FunctionStepMethod::MAXSTEPSIZE;
+	//settings.get<ifcopenshell::geometry::settings::FunctionStepParam>().value = 1.0;
+
+	//auto mapping = ifcopenshell::geometry::impl::mapping_implementations().construct(&file, settings);
 
 	//auto curve = file.instance_by_id(110)->as<Schema::IfcCurveSegment>();
 	//auto mapped_item = mapping->map(curve);
 
 
-	auto gc = file.instance_by_id(1099)->as<Schema::IfcOffsetCurveByDistances>();
-	auto mapped_item = mapping->map(gc);
-	auto implicit_item = ifcopenshell::geometry::taxonomy::dcast<ifcopenshell::geometry::taxonomy::implicit_item>(mapped_item);
-	auto gc_fn = ifcopenshell::geometry::taxonomy::dcast<ifcopenshell::geometry::taxonomy::offset_function>(implicit_item);
-	ifcopenshell::geometry::function_item_evaluator evaluator(settings, gc_fn);
-	auto d = evaluator.evaluation_points();
+	//auto gc = file.instance_by_id(1099)->as<Schema::IfcOffsetCurveByDistances>();
+	//auto mapped_item = mapping->map(gc);
+	//auto implicit_item = ifcopenshell::geometry::taxonomy::dcast<ifcopenshell::geometry::taxonomy::implicit_item>(mapped_item);
+	//auto gc_fn = ifcopenshell::geometry::taxonomy::dcast<ifcopenshell::geometry::taxonomy::offset_function>(implicit_item);
+	//ifcopenshell::geometry::function_item_evaluator evaluator(settings, gc_fn);
+	//auto d = evaluator.evaluation_points();
 
-	auto length_unit = mapping->get_length_unit();
+	//auto length_unit = mapping->get_length_unit();
 
-	auto p = evaluator.evaluate(gc_fn->start());
-   p /= length_unit;
-	std::cout << p(0, 3) << ", " << p(1, 3) << ", " << p(2, 3) << std::endl;
+	//auto p = evaluator.evaluate(gc_fn->start());
+  // p /= length_unit;
+	//std::cout << p(0, 3) << ", " << p(1, 3) << ", " << p(2, 3) << std::endl;
 
-	p = evaluator.evaluate(gc_fn->end());
-	p /= length_unit;
-	std::cout << p(0, 3) << ", " << p(1, 3) << ", " << p(2, 3) << std::endl;
+	//p = evaluator.evaluate(gc_fn->end());
+	//p /= length_unit;
+	//std::cout << p(0, 3) << ", " << p(1, 3) << ", " << p(2, 3) << std::endl;
 
 	//auto pwf = gc_fn->get_vertical();
 	//ifcopenshell::geometry::function_item_evaluator evaluator(settings, pwf);
