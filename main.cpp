@@ -512,22 +512,22 @@ int main(int argc, char** argv)
 	ifcopenshell::geometry::Settings settings;
 	auto mapping = ifcopenshell::geometry::impl::mapping_implementations().construct(&file, settings);
 
-	auto profiles = file.instances_by_type<Schema::IfcOpenCrossProfileDef>();
-	for (auto& profile : *profiles)
-	{
-		profile->toString(std::cout); std::cout << std::endl;
-		auto mapped_item = mapping->map(profile);
-		auto loop = ifcopenshell::geometry::taxonomy::dcast<ifcopenshell::geometry::taxonomy::loop>(mapped_item);
-		loop->print(std::cout, 0);
-	}
-
-	//auto surfaces = file.instances_by_type<Schema::IfcSectionedSurface>();
-	//for (auto& surface : *surfaces)
+	//auto profiles = file.instances_by_type<Schema::IfcOpenCrossProfileDef>();
+	//for (auto& profile : *profiles)
 	//{
-	//	auto mapped_item = mapping->map(surface);
-	//	auto loft = ifcopenshell::geometry::taxonomy::dcast<ifcopenshell::geometry::taxonomy::loft>(mapped_item);
-	//	loft->print(std::cout, 0);
+	//	profile->toString(std::cout); std::cout << std::endl;
+	//	auto mapped_item = mapping->map(profile);
+	//	auto loop = ifcopenshell::geometry::taxonomy::dcast<ifcopenshell::geometry::taxonomy::loop>(mapped_item);
+	//	loop->print(std::cout, 0);
 	//}
+
+	auto surfaces = file.instances_by_type<Schema::IfcSectionedSurface>();
+	for (auto& surface : *surfaces)
+	{
+		auto mapped_item = mapping->map(surface);
+		auto loft = ifcopenshell::geometry::taxonomy::dcast<ifcopenshell::geometry::taxonomy::loft>(mapped_item);
+		loft->print(std::cout, 0);
+	}
 
 	//ifcopenshell::geometry::Settings settings;
 	//settings.get<ifcopenshell::geometry::settings::FunctionStepType>().value = ifcopenshell::geometry::settings::FunctionStepMethod::MAXSTEPSIZE;

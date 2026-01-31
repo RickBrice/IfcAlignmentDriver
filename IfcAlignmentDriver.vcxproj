@@ -103,16 +103,16 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;HAS_SCHEMA_2x3;HAS_SCHEMA_4;HAS_SCHEMA_4x1;HAS_SCHEMA_4x2;HAS_SCHEMA_4x3;HAS_SCHEMA_4x3_tc1;HAS_SCHEMA_4x3_add1;HAS_SCHEMA_4x3_add2;SCHEMA_SEQ=(2x3)(4)(4x1)(4x2)(4x3)(4x3_tc1)(4x3_add1)(4x3_add2);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;HAS_SCHEMA_2x3;HAS_SCHEMA_4;HAS_SCHEMA_4x1;HAS_SCHEMA_4x2;HAS_SCHEMA_4x3;HAS_SCHEMA_4x3_tc1;HAS_SCHEMA_4x3_add1;HAS_SCHEMA_4x3_add2;SCHEMA_SEQ=(2x3)(4)(4x1)(4x2)(4x3)(4x3_tc1)(4x3_add1)(4x3_add2);IFOPSH_WITH_ROCKSDB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(IFCOPENSHELL_DIR)\src;$(BOOSTDIR);$(IFCOPENSHELL_DIR)\_deps-vs2022-x64-installed\Eigen</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(IFCOPENSHELL_DIR)\src;$(BOOSTDIR);$(IFCOPENSHELL_DIR)\_deps-vs2022-x64-installed\Eigen;$(IFCOPENSHELL_DIR)\_deps-vs2022-x64-installed\rocksdb\include</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>$(CoreLibraryDependencies);%(AdditionalDependencies);bcrypt.lib;IfcParse.lib;IfcGeom.lib;geometry_mapping_ifc4x3_add2.lib;geometry_mapping_ifc4x3_add1.lib;geometry_mapping_ifc4x3_tc1.lib;geometry_mapping_ifc4x3.lib;geometry_mapping_ifc4x2.lib;geometry_mapping_ifc4x1.lib;geometry_mapping_ifc4.lib;geometry_mapping_ifc2x3.lib;libboost_program_options-vc143-mt-gd-x64-1_86.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(IFCOPENSHELL_DIR)\_build-vs2022-x64\$(Configuration);$(BOOSTDIR)\stage\lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>$(CoreLibraryDependencies);%(AdditionalDependencies);bcrypt.lib;IfcParse\Debug\IfcParse_d.lib;IfcGeom\Debug\IfcGeom_d.lib;F:\IfcOpenShell\_build-vs2022-x64\ifcgeom\mapping\geometry_mapping_ifc4x3_add2.dir\Debug\geometry_mapping_ifc4x3_add2.lib;libboost_program_options-vc143-mt-gd-x64-1_86.lib;F:\IfcOpenShell\_deps-vs2022-x64-installed\rocksdb\lib\rocksdb_d.lib;F:\IfcOpenShell\_deps-vs2022-x64-installed\zstd\lib\zstd_static.lib;shlwapi.lib;rpcrt4.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(IFCOPENSHELL_DIR)\_build-vs2022-x64\;$(BOOSTDIR)\stage\lib</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
